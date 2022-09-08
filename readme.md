@@ -22,14 +22,18 @@ Date: save in format dd-mm-yyyy.
 Currency must be saved as a separate attribute.
 Save database dump to SQL file, with database creation schema.
 ## Technical requirements
-- For sending requests to the website, you can use any of the following:
+
+For sending requests to the website, you can use any of the following:
 - requests, aiohttp, httpx.
-- If you decide to render page to get information from site pages, use any of the
+
+If you decide to render page to get information from site pages, use any of the
 following:
 - Selenium, Playwright.
-- As ORM you can use the following:
+
+As ORM you can use the following:
 - peewee, SQLAlchemy, mongoengine.
-- Database for storing parsed data, any of the following:
+
+Database for storing parsed data, any of the following:
 - PostgreSQL, MySQL, MongoDB
 ## Must have
 - Using of any virtual environment manager(venv, pipenv, poetry)
