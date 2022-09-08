@@ -103,7 +103,7 @@ def collect(url):
             d['description'].append(description)
             d['currency'].append(currency)
             d['price'].append(price)
-        print(f'collecting page #{count}')
+        print(f'Page #{count} was collected successfully')
         # Handling pages with the Next button
         next_page = soup.find('a', {'title': "Next"})
 
@@ -125,4 +125,10 @@ def collect(url):
 
 if __name__ == '__main__':
     url = 'https://www.kijiji.ca/b-apartments-condos/city-of-toronto/c37l1700273'
-    collect(url)
+    # write scrapped data
+    df = collect(url)
+    # create sqlalchemy engine
+    engine = sqlalchemy.create_engine('postgresql://postgres:postgres@localhost:5432')  # use your own passwords
+    # write our df to database
+    df.to_sql('ads', engine, index=False)
+    print('saving to database completed')
