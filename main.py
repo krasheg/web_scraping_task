@@ -6,22 +6,14 @@ from urllib.parse import urljoin
 import pandas as pd
 import sqlalchemy
 
-# headers = {
-#     'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-#                   'Chrome/105.0.0.0 Safari/537.36'
-# }
-url = 'https://www.kijiji.ca/b-apartments-condos/city-of-toronto/c37l1700273'
 
-
-# req = requests.get(url=url, headers=headers)
-# src = req.text
-#
-# with open("data/index.html", 'w', encoding='utf-8') as file:
-#     file.write(src)
-
-
-def collect(url):
-    # empty dict for collected data
+def collect(url: str):
+    """
+    Script for parsing site https://www.kijiji.ca/ and saving data into dataframe
+    :param url: url for parsing
+    :return: dataframe with scrapped data
+    """
+    # dict with empty lists for collected data
     d = {
         'image': [],
         'title': [],
@@ -32,17 +24,17 @@ def collect(url):
         'currency': [],
         'price': []
     }
+    # counter for pages
     count = 1
+    # loop over all pages until "Next" button will disappear
     while True:
-        headers = {
-            'User-agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) '
-                          'Chrome/105.0.0.0 Safari/537.36'
-        }
-        response = requests.get(url, headers=headers)
+        # getting page
+        response = requests.get(url)
+        # creating a bs4 object with lxml parser
         soup = BeautifulSoup(response.text, "lxml")
-
+        # finding all the ads in page
         ads = soup.find_all('div', class_='search-item')
-
+        # loop over all ads and writes scrapped data
         for ad in ads:
             # image
             try:
@@ -115,11 +107,6 @@ def collect(url):
             break
     # Create dataframe for export to database
     data_frame = pd.DataFrame(d)
-    # create sqlalchemy engine
-    engine = sqlalchemy.create_engine('postgresql://postgres:postgres@localhost:5432')
-    # write our df to database
-    data_frame.to_sql('ads', engine, index=False)
-    print('saving to database completed')
     return data_frame
 
 
