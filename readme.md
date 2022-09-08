@@ -72,3 +72,6 @@ __Project uses python v.3.9__
 ### How to install project packages:
 
 > `pip install -r requirements.txt`
+ 
+### Run script:
+> `python main.py`
